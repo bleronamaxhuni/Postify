@@ -179,7 +179,7 @@
                 </section>
             </div>
         </div>
-        <div class="flex flex-col flex-1">
+        <div class="flex flex-col w-full">
             <header class="relative flex items-center justify-between flex-shrink-0 p-4">
                 <!-- Mobile sub header button -->
                 <button @click="isSubHeaderOpen = !isSubHeaderOpen"

@@ -28,6 +28,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/posts', [PostsController::class, 'index'])->name('posts.index');
     // Route::get('/posts/create', [PostsController::class, 'create'])->name('posts.create');
     Route::post('/posts/create', [PostsController::class, 'store'])->name('posts.store');
+    Route::get('/posts/{post}/edit', [PostsController::class, 'edit'])->name('posts.edit');
+    Route::patch('/posts/{post}', [PostsController::class, 'update'])->name('posts.update');
+    Route::delete('posts/{post}', [PostsController::class, 'destroy'])->name('posts.destroy');
+
 });
 
 require __DIR__.'/auth.php';
