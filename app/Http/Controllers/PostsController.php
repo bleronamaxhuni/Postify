@@ -9,18 +9,20 @@ use Illuminate\Support\Facades\Auth;
 
 class PostsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Post $post)
     {
-        $user=Auth::user();
-        $posts = Post::where('user_id', '=', $user->id)->with(['user'])->paginate(5);
+        $user = Auth::user();
+        $posts = Post::where('user_id', '=', $user->id)->with(['user'])->get();
         foreach ($posts as $post) {
             $post->created_at = Carbon::parse($post->created_at)->diffForHumans();
+            $post->comments = $post->comments()->with(['user'])->get();
         }
-        return view('posts.posts',['posts'=>$posts,'post'=>$post]);
-    }
+        return view('posts.posts', [
+            'posts' => $posts,
+            'post'=>$post,
+        ]);
+    }    
+
     public function store(Request $request)
     {
         $request->validate([

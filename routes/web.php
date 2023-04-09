@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\LikesController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SavedPostController;
 use App\Models\Post;
 use Illuminate\Support\Facades\Route;
 
@@ -18,9 +20,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::get('/', function () {
-    return view('index');
-})->middleware(['auth', 'verified'])->name('index');
+// Route::get('/', function () {
+//     return view('posts.index');
+// })->middleware(['auth', 'verified'])->name('posts.index');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -37,6 +39,15 @@ Route::middleware('auth')->group(function () {
     // LIKES
     Route::post('/like-post', [LikesController::class, 'likePost'])->name('like-post');
     Route::post('/unlike-post', [LikesController::class, 'unlikePost'])->name('unlike-post');
+
+    // COMMENTS
+    Route::post('/comments', [CommentsController::class, 'store'])->name('comments.store');
+    Route::delete('/comments/{comment}', [CommentsController::class, 'destroy'])->name('comments.destroy');
+
+    // SAVED POST
+    Route::get('/saved-posts', [SavedPostController::class, 'index'])->name('saved-posts.index');
+    Route::post('/saved-posts', [SavedPostController::class, 'store'])->name('saved-posts.store');
+    Route::delete('/saved-posts', [SavedPostController::class, 'destroy'])->name('saved-posts.destroy');
 });
 
 require __DIR__.'/auth.php';

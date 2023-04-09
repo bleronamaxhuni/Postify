@@ -14,7 +14,7 @@
 </head>
 
 <body>
-    <x-navigation></x-navigation>
+    <x-navigation :post=$post></x-navigation>
     
     <div class="flex w-full justify-center p-3">
         <div class="overflow-y-auto top-0 lg:w-8/12  p-8 rounded-lg  shadow-lg shadow-gray-300 bg-white mt-4">

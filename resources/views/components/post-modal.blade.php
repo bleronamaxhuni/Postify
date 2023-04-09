@@ -25,14 +25,7 @@
             <div class="form-group">
                 <label class="font-bold mb-1 text-gray-700 block" for="content">Content</label>
                 <textarea class="w-full p-2 mt-2 mb-3  pl-4 pr-10 py-3 leading-none rounded-lg shadow-sm focus:outline-none text-gray-600 font-medium focus:ring focus:ring-blue-50 bg-gray-200" id="content" name="content" rows="5" required></textarea>
-            </div>
-        
-            <div class="form-group">
-                <label class="font-bold mb-1 text-gray-700 block" for="image">Image</label>
-                <input type="file" class="w-full p-2 mt-2 mb-3  pl-4 pr-10 py-3 leading-none rounded-lg shadow-sm focus:outline-none text-gray-600 font-medium focus:ring focus:ring-blue-50 bg-gray-200" id="image" name="image">
-                <small class="form-text text-muted">Max file size: 2MB. Allowed file types: jpeg, png, jpg, gif, svg.</small>
-            </div>
-        
+            </div>        
             <button type="submit" class="py-2 px-8 bg-indigo-600 text-white rounded hover:bg-indigo-700 mr-2 float-right">Post</button>
         </form>
     </div>
