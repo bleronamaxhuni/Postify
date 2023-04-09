@@ -22,8 +22,10 @@ Route::get('/', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('/profile',);
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::delete('/profile/picture', [ProfileController::class, 'deletePicture'])->name('profile.delete-picture');
     // Posts
     Route::get('/posts', [PostsController::class, 'index'])->name('posts.index');
     // Route::get('/posts/create', [PostsController::class, 'create'])->name('posts.create');

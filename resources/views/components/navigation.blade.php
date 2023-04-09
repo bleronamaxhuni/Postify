@@ -1,3 +1,4 @@
+@props(['post'])
 <!-- component -->
 <div x-data="setup()" x-init="$refs.loading.classList.add('hidden');" @resize.window="watchScreen()">
     <div class="flex h-screen antialiased text-gray-900 bg-gray-100 dark:bg-dark dark:text-light">
@@ -35,10 +36,12 @@
                 <div class="relative flex items-center flex-shrink-0 p-2" x-data="{ isOpen: false }">
                     <button @click="isOpen = !isOpen; $nextTick(() => {isOpen ? $refs.userMenu.focus() : null})"
                         class="transition-opacity rounded-lg opacity-80 hover:opacity-100 focus:outline-none focus:ring focus:ring-indigo-600 focus:ring-offset-white focus:ring-offset-2">
-                        <img class="w-8 h-8 rounded-lg shadow-md"
-                            src="https://avatars.githubusercontent.com/u/57622665?s=460&u=8f581f4c4acd4c18c33a87b3e6476112325e8b38&v=4"
-                            alt="Ahmed Kamel" />
-                        <span class="sr-only">User menu</span>
+                        @if ($post->user->profile_picture)
+                            <img class="w-12 h-12 rounded-full object-cover mr-4 shadow" src="{{ url('/storage/profile_pictures/' . $post->user->profile_picture) }}">
+                        @else
+                            <img class="w-12 h-12 rounded-full object-cover mr-4 shadow" src="{{ url('/images/anonymous.png') }}">
+                        @endif
+                    <span class="sr-only">User menu</span>
                     </button>
                     <div x-show="isOpen" @click.away="isOpen = false" @keydown.escape="isOpen = false" x-ref="userMenu"
                         tabindex="-1"
@@ -88,9 +91,11 @@
                 <div class="relative flex items-center flex-shrink-0 p-2" x-data="{ isOpen: false }">
                     <button @click="isOpen = !isOpen; $nextTick(() => {isOpen ? $refs.userMenu.focus() : null})"
                         class="transition-opacity rounded-lg opacity-80 hover:opacity-100 focus:outline-none focus:ring focus:ring-indigo-600 focus:ring-offset-white focus:ring-offset-2">
-                        <img class="w-10 h-10 rounded-lg shadow-md"
-                            src="https://avatars.githubusercontent.com/u/57622665?s=460&u=8f581f4c4acd4c18c33a87b3e6476112325e8b38&v=4"
-                            alt="Ahmed Kamel" />
+                        @if ($post->user->profile_picture)
+                            <img class="w-12 h-12 rounded-full object-cover mr-4 shadow" src="{{ url('/storage/profile_pictures/' . $post->user->profile_picture) }}">
+                        @else
+                            <img class="w-12 h-12 rounded-full object-cover mr-4 shadow" src="{{ url('/images/anonymous.png') }}">
+                        @endif
                         <span class="sr-only">User menu</span>
                     </button>
                     <div x-show="isOpen" @click.away="isOpen = false" @keydown.escape="isOpen = false" x-ref="userMenu"

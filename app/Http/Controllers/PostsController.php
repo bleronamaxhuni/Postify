@@ -5,21 +5,22 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class PostsController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Post $post)
     {
-        $posts=Post::all(); 
+        $user=Auth::user();
+        $posts = Post::where('user_id', '=', $user->id)->with(['user'])->paginate(5);
         foreach ($posts as $post) {
             $post->created_at = Carbon::parse($post->created_at)->diffForHumans();
         }
-        return view('posts.posts',['posts'=>$posts]);
+        return view('posts.posts',['posts'=>$posts,'post'=>$post]);
     }
-
     public function store(Request $request)
     {
         $request->validate([
@@ -31,6 +32,7 @@ class PostsController extends Controller
         $post = new Post;
         $post->title = $request->title;
         $post->content = $request->content;
+        $post['user_id']=Auth::user()->id;
 
         if ($request->hasFile('image')) {
             $image = $request->file('image');
@@ -49,7 +51,10 @@ class PostsController extends Controller
      */
     public function edit(Post $post)
     {
-        
+        $user=Auth::user();
+        if($post->user_id !== $user->id){
+            return redirect()->back()->with('error', 'This post does not exist.');
+        }
         return view('posts.edit',['post'=>$post]);
     }
 

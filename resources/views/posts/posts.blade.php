@@ -16,7 +16,7 @@
 </head>
 
 <body>
-    <x-navigation></x-navigation>
+    <x-navigation :post="$post"></x-navigation>
 
     <x-post-modal></x-post-modal>
 
@@ -24,15 +24,21 @@
         @foreach($posts as $post)
         <div class="flex bg-white shadow-lg rounded-lg mx-2 my-8">
             <div class="flex items-start px-4 py-6 w-full">
-                <img class="w-12 h-12 rounded-full object-cover mr-4 shadow"
+                {{-- <img class="w-12 h-12 rounded-full object-cover mr-4 shadow"
                     src="https://images.unsplash.com/photo-1542156822-6924d1a71ace?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
-                    alt="avatar">
+                    alt="avatar"> --}}
+                    @if ($post->user->profile_picture)
+                        <img class="w-12 h-12 rounded-full object-cover mr-4 shadow" src="{{ url('/storage/profile_pictures/' . $post->user->profile_picture) }}">
+                    @else
+                        <img class="w-12 h-12 rounded-full object-cover mr-4 shadow" src="{{ url('/images/anonymous.png') }}">
+                    @endif                
+
                 <div class="w-full">
                     <div class="flex items-center justify-between w-full">
-                        <h2 class="text-lg font-semibold text-gray-900 -mt-1">Brad Adams </h2>
+                        <h2 class="text-lg font-semibold text-gray-900 -mt-1">{{$post->user->name}}</h2>
                         <small class="text-sm text-gray-700">{{ $post->created_at->diffForHumans() }}</small>
                     </div>
-                    <p class="text-gray-700">Joined 12 SEP 2012. </p>
+                    <p class="text-gray-700">Joined {{$post->user->created_at->format('d M Y')}}</p>
                     <h2 class="mt-3 font-bold text-lg">{{ $post->title }}</h2>
                     <p class="mt-3 text-gray-700 text-sm">{{ $post->content }}</p>
                     <div class="flex justify-between w-full">
