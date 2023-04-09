@@ -44,11 +44,25 @@
                     <div class="flex justify-between w-full">
                         <div class="mt-4 flex items-center">
                             <div class="flex text-gray-700 text-sm mr-3">
-                                <svg fill="none" viewBox="0 0 24 24" class="w-4 h-4 mr-1" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                                </svg>
-                                <span>12</span>
+                                @php
+                                    $likedPosts = session()->get('liked_posts', []);
+                                    $isLiked = in_array($post->id, $likedPosts);
+                                @endphp
+                                
+                                <form action="{{ route('like-post') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="post_id" value="{{ $post->id }}">
+                                    {{-- <button type="submit">{{ $isLiked ? 'Unlike' : 'Like' }}</button> --}}
+                                    <button type="submit" class="inline-flex items-center py-2 text-base font-medium rounded-md text-gray-700 bg-white">
+                                        <span class="{{ $isLiked ? 'text-red-600' : 'text-gray-400 hover:text-red-600' }} mr-2">
+                                            <svg fill="{{ $isLiked ? 'red' : 'none' }}" viewBox="0 0 24 24" class="w-5 h-5">
+                                                <path stroke="{{ $isLiked ? 'none' : 'currentColor' }}" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                            </svg>
+                                        </span>
+                                        <span>{{ $post->likesCount() }}</span>
+                                    </button>                                                                                                                                   
+                                </form>               
                             </div>
                             <div class="flex text-gray-700 text-sm mr-8">
                                 <svg fill="none" viewBox="0 0 24 24" class="w-4 h-4 mr-1" stroke="currentColor">
