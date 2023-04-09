@@ -90,18 +90,21 @@
     <script>
         const setup = () => {
             return {
-                isSidebarOpen: false
-                , currentSidebarTab: null
-                , isSettingsPanelOpen: false
-                , isSubHeaderOpen: false
-                , watchScreen() {
+                isSidebarOpen: false,
+                currentSidebarTab: null,
+                isSettingsPanelOpen: false,
+                isSubHeaderOpen: false,
+                watchScreen() {
                     if (window.innerWidth <= 1024) {
-                        this.isSidebarOpen = false
+                        this.isSidebarOpen = false;
                     }
                 }
-            , }
+            }
         }
 
+        function toggleModal() {
+            document.getElementById('modal').classList.toggle('hidden');
+        }
     </script>
 </body>
 

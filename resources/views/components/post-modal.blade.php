@@ -37,9 +37,3 @@
         </form>
     </div>
 </div>
-
-<script>
-function toggleModal() {
-    document.getElementById('modal').classList.toggle('hidden');
-}
-</script>
