@@ -9,6 +9,17 @@ use Illuminate\Support\Facades\Auth;
 
 class LikesController extends Controller
 {
+    public function index(Post $post)
+    {
+        $likedPosts = Likes::whereHas('user', function($query) {
+        $query->where('id', auth()->id());
+        })->with('post')->get();
+            
+        return view('posts.liked-posts',[
+            'likedPosts'=>$likedPosts,
+            'post'=>$post,
+        ]);
+    }
     public function likePost(Request $request)
     {
         $postId = $request->input('post_id');

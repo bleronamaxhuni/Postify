@@ -154,6 +154,12 @@
                             </span>
                             <span class="text-black group-hover:text-white">Saved Posts</span>
                         </a>                    
+                        <a href="{{route('liked-posts.index')}}" class="flex items-center space-x-2 text-indigo-600 transition-colors rounded-lg group hover:bg-indigo-600">
+                            <span aria-hidden="true" class="p-2 transition-colors rounded-lg group-hover:text-white">
+                                <i class="fa-solid fa-bookmark group-hover:text-white"></i>
+                            </span>
+                            <span class="text-black group-hover:text-white">Liked Posts</span>
+                        </a>                    
                     </div>
                 </nav>
 

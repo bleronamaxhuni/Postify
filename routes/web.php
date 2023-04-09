@@ -37,6 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/posts/{post}', [PostsController::class, 'update'])->name('posts.update');
     Route::delete('posts/{post}', [PostsController::class, 'destroy'])->name('posts.destroy');
     // LIKES
+    Route::get('/like-post', [LikesController::class, 'index'])->name('liked-posts.index');
     Route::post('/like-post', [LikesController::class, 'likePost'])->name('like-post');
     Route::post('/unlike-post', [LikesController::class, 'unlikePost'])->name('unlike-post');
 

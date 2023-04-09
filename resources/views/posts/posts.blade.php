@@ -138,7 +138,7 @@
                             <button
                                 class="rounded-lg px-4 py-2 text-blue-600 hover:bg-blue-600 hover:text-white duration-300"><a
                                     href="/posts/{{ $post['id'] }}/edit"><i class="fa-solid fa-pen-to-square"></i> <span
-                                        class="md:hidden">Edit</span></a>
+                                        class="md:hidden"></span></a>
                             </button>
                             <form action="/posts/{{ $post['id'] }}" method="POST">
                                 @csrf
@@ -146,7 +146,7 @@
                                 <button
                                     class="rounded-lg px-4 py-2 text-red-600 hover:bg-red-700 hover:text-white duration-300"
                                     onclick="deleteFunction();"> <i class="fa-solid fa-trash"></i> <input type="submit"
-                                        name="" value="Delete" class="md:hidden">
+                                        name="" value="" class="md:hidden">
                                 </button>
                             </form>
                         </div>
