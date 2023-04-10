@@ -17,7 +17,7 @@
 
     <x-navigation :post="$post"></x-navigation>
     <h2 class="font-bold pl-2 text-2xl">Dashboard</h2>
-    <div class="grid grid-cols-3 gap-6 p-5">
+    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 p-5">
         <div class="grid mt-5">
             <a class="transform  hover:scale-105 transition duration-300 shadow-lg rounded-lg intro-y bg-white"
                 href="#">
