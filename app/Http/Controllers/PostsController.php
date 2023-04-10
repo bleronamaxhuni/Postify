@@ -13,8 +13,8 @@ class PostsController extends Controller
 {
     public function index(Post $post)
     {
-        $user = Auth::user();
-        $posts = Post::where('user_id', '=', $user->id)->with(['user'])->get();
+        // $user = Auth::user();
+        $posts = Post::all();
         foreach ($posts as $post) {
             $post->created_at = Carbon::parse($post->created_at)->diffForHumans();
             $post->comments = $post->comments()->with(['user'])->get();

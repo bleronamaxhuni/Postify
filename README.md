@@ -1,2 +1,4 @@
-# Postify
- 
+# Postify is a web application built using Laravel, Breeze, HTML, Tailwind, JavaScript, and SQL technologies. The application allows users to post anything they want, including a title and content. 
+# In the navigation menu, users can access their profile picture, log out, and update their profile information and have access on Postify's pages. Users can view and see statistics such as the total number of posts, likes, and saved posts, and the latest six posts on their dashboard.
+# The main features of the application include liking, saving, editing, and deleting posts, as well as commenting on them. Posts cards display the profile picture, the user's join date, the post date, the post title and body, the number of likes, comments, saves, and the options to edit or delete the post. To make it easy for users to access their liked and saved posts, the application has separate pages for each. 
+# In summary, Postify is a user-friendly web application that allows users to create and interact with posts, providing a seamless experience for users to enjoy.
