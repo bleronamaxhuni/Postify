@@ -15,18 +15,18 @@
 
 <body>
     <x-navigation :post="$post"></x-navigation>
+            <div class="flex flex-col w-full mt-[100px]">
+                <h2 class="font-bold pl-2 text-2xl">Liked Posts</h2>
 
-    <h2 class="font-bold pl-2 text-2xl">Liked Posts</h2>
-
-    @if ($likedPosts->count() > 0)
-        @foreach ($likedPosts as $likedPost)
+                @if ($likedPosts->count() > 0)
+                @foreach ($likedPosts as $likedPost)
                 <div class="flex bg-white shadow-lg rounded-lg mx-2 my-8">
                     <div class="flex items-start px-4 py-6 w-full">
                         @if ($likedPost->post->user->profile_picture)
                         <img class="w-12 h-12 rounded-full object-cover mr-4 shadow" src="{{ url('/storage/profile_pictures/' . $likedPost->post->user->profile_picture) }}">
-                    @else
+                        @else
                         <img class="w-12 h-12 rounded-full object-cover mr-4 shadow" src="{{ url('/images/anonymous.png') }}">
-                    @endif                
+                        @endif
                         <div class="w-full">
                             <div class="flex items-center justify-between w-full">
                                 <h2 class="text-lg font-semibold text-gray-900 -mt-1">{{$likedPost->post->user->name}}</h2>
@@ -41,36 +41,29 @@
                                         @php
                                         $likedPosts = session()->get('liked_posts', []);
                                         $isLiked = in_array($likedPost->post->id, $likedPosts);
-                                    @endphp
-                                    
-                                    <form action="{{ route('like-post') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="post_id" value="{{ $likedPost->post->id }}">
-                                        <button type="submit" class="inline-flex items-center py-2 text-base font-medium rounded-md text-gray-700 bg-white">
-                                            <span class="{{ $isLiked ? 'text-red-600' : 'text-gray-400 hover:text-red-600' }} mr-2">
-                                                <svg fill="{{ $isLiked ? 'red' : 'none' }}" viewBox="0 0 24 24" class="w-5 h-5">
-                                                    <path stroke="{{ $isLiked ? 'none' : 'currentColor' }}" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                                                </svg>
-                                            </span>
-                                            <span>{{ $likedPost->post->likesCount() }}</span>
-                                        </button>                                                                                                                                   
-                                    </form> 
+                                        @endphp
+
+                                        <form action="{{ route('like-post') }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="post_id" value="{{ $likedPost->post->id }}">
+                                            <button type="submit" class="inline-flex items-center py-2 text-base font-medium rounded-md text-gray-700 bg-white">
+                                                <span class="{{ $isLiked ? 'text-red-600' : 'text-gray-400 hover:text-red-600' }} mr-2">
+                                                    <svg fill="{{ $isLiked ? 'red' : 'none' }}" viewBox="0 0 24 24" class="w-5 h-5">
+                                                        <path stroke="{{ $isLiked ? 'none' : 'currentColor' }}" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                                    </svg>
+                                                </span>
+                                                <span>{{ $likedPost->post->likesCount() }}</span>
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
                                 <div class="mt-4 flex items-center justify-end">
-                                    <button
-                                        class="rounded-lg px-4 py-2 text-blue-600 hover:bg-blue-600 hover:text-white duration-300"><a
-                                            href="/posts/{{ $likedPost->post['id'] }}/edit"><i class="fa-solid fa-pen-to-square"></i> <span
-                                                class="md:hidden">Edit</span></a>
+                                    <button class="rounded-lg px-4 py-2 text-blue-600 hover:bg-blue-600 hover:text-white duration-300"><a href="/posts/{{ $likedPost->post['id'] }}/edit"><i class="fa-solid fa-pen-to-square"></i> <span class="md:hidden">Edit</span></a>
                                     </button>
                                     <form action="/posts/{{ $likedPost->post['id'] }}" method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <button
-                                            class="rounded-lg px-4 py-2 text-red-600 hover:bg-red-700 hover:text-white duration-300"
-                                            onclick="deleteFunction();"> <i class="fa-solid fa-trash"></i> <input type="submit"
-                                                name="" value="Delete" class="md:hidden">
+                                        <button class="rounded-lg px-4 py-2 text-red-600 hover:bg-red-700 hover:text-white duration-300" onclick="deleteFunction();"> <i class="fa-solid fa-trash"></i> <input type="submit" name="" value="Delete" class="md:hidden">
                                         </button>
                                     </form>
                                 </div>
@@ -78,13 +71,13 @@
                         </div>
                     </div>
                 </div>
-        @endforeach
-    @else
-        <p class="pl-2 text-base">No saved posts yet.</p>
-    @endif
+                @endforeach
+                @else
+                <p class="pl-2 text-base">No saved posts yet.</p>
+                @endif
 
-    </div>
-    </div>
+            </div>
+        </div>
     </div>
     </div>
 
@@ -112,3 +105,4 @@
 </body>
 
 </html>
+

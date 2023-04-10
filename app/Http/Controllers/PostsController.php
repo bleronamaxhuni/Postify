@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Likes;
 use App\Models\Post;
+use App\Models\SavedPost;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -28,21 +30,12 @@ class PostsController extends Controller
         $request->validate([
             'title' => 'required',
             'content' => 'required',
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
         $post = new Post;
         $post->title = $request->title;
         $post->content = $request->content;
         $post['user_id']=Auth::user()->id;
-
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $filename = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('images'), $filename);
-            $post->image = $filename;
-        }
-
         $post->save();
 
         return redirect('/posts')->with('success', 'Post created successfully.');
@@ -68,19 +61,10 @@ class PostsController extends Controller
         $request->validate([
             'title' => 'required',
             'content' => 'required',
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
         $post->title = $request->title;
         $post->content = $request->content;
-
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $filename = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('images'), $filename);
-            $post->image = $filename;
-        }
-
         $post->save();
 
         return redirect('/posts')->with('success', 'Post updated successfully.');
@@ -90,5 +74,25 @@ class PostsController extends Controller
     {
         $post->delete();
         return back()->with('message', "Post has been deleted");
+    }
+    public function dashboard(Post $post)
+    {
+        $user = Auth::user();
+        $posts = Post::where('user_id', $user->id)->get();
+        $latestPosts = Post::where('user_id', $user->id)->latest()->take(6)->get();
+        $postCount = Post::where('user_id', $user->id)->count();
+        $likeCount = Likes::whereHas('user', function($query) {
+            $query->where('id', auth()->id());
+        })->count();
+        $savedPostCount = SavedPost::where('user_id', $user->id)->count();
+    
+        return view('posts.dashboard', [
+            'posts' => $posts,
+            'post'=>$post,
+            'latestPosts'=>$latestPosts,
+            'postCount' => $postCount,
+            'likeCount' => $likeCount,
+            'savedPostCount'=>$savedPostCount,
+        ]);
     }
 }

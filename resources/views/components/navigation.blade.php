@@ -1,7 +1,7 @@
 @props(['post'])
 <!-- component -->
-<div x-data="setup()" x-init="$refs.loading.classList.add('hidden');" @resize.window="watchScreen()">
-    <div class="flex xl:h-screen antialiased text-gray-900 bg-gray-100 lg:h-full">
+<div x-data="setup()" x-init="$refs.loading.classList.add('hidden');">
+    <div class="flex h-screen antialiased text-gray-900 bg-gray-100">
         <!-- Loading screen -->
         <div x-ref="loading"
             class="fixed inset-0 z-50 flex items-center justify-center text-2xl font-semibold text-white bg-indigo-800">
@@ -26,34 +26,41 @@
                 </button>
 
                 <!-- Logo -->
-                <a href="#">
-                    <img class="w-10 h-auto"
-                        src="https://raw.githubusercontent.com/kamona-ui/dashboard-alpine/main/public/assets/images/logo.png"
-                        alt="K-UI" />
+                <a href="/">
+                    <i class="fas fa-file-alt text-indigo-600 text-2xl"></i>
                 </a>
 
                 <!-- User avatar button -->
                 <div class="relative flex items-center flex-shrink-0 p-2" x-data="{ isOpen: false }">
-                    <button @click="isOpen = !isOpen; $nextTick(() => {isOpen ? $refs.userMenu.focus() : null})"
-                        class="transition-opacity rounded-lg opacity-80 hover:opacity-100 focus:outline-none focus:ring focus:ring-indigo-600 focus:ring-offset-white focus:ring-offset-2">
-                        @if ($post->user)
-                            @if ($post->user->profile_picture)
-                                <img class="w-12 h-12 rounded-full object-cover mr-4 shadow" src="{{ url('/storage/profile_pictures/' . $post->user->profile_picture) }}">
+                    <button @click="isOpen = !isOpen; $nextTick(() => {isOpen ? $refs.userMenu.focus() : null})" class="transition-opacity rounded-lg opacity-80 hover:opacity-100 focus:outline-none focus:ring focus:ring-indigo-600 focus:ring-offset-white focus:ring-offset-2">
+                        @if (auth()->check())
+                            @if (auth()->user()->profile_picture)
+                                <img class="w-12 h-12 rounded-full object-cover mr-4 shadow" src="{{ url('/storage/profile_pictures/' . auth()->user()->profile_picture) }}">
                             @else
-                                <img class="w-12 h-12 rounded-full object-cover mr-4 shadow" src="{{ url('/images/anonymous.png') }}">
+                                <img class="w-12 h-12 rounded-full object-cover mr-4 shadow" src="{{ asset('/images/anonymous.png') }}">                            
                             @endif
                         @endif
-                    <span class="sr-only">User menu</span>
-                    </button>
+                        <span class="sr-only">User menu</span>
+                    </button>                    
                     <div x-show="isOpen" @click.away="isOpen = false" @keydown.escape="isOpen = false" x-ref="userMenu"
                         tabindex="-1"
-                        class="absolute w-48 py-1 mt-2 origin-bottom-left bg-white rounded-md shadow-lg left-10 bottom-14 focus:outline-none"
+                        class="absolute w-48 py-1 mt-2 origin-bottom-left bg-white rounded-md shadow-lg left-10 top-10 focus:outline-none"
                         role="menu" aria-orientation="vertical" aria-label="user menu">
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Your
-                            Profile</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                            <x-responsive-nav-link :href="route('profile.edit')">
+                                {{ __('Profile') }}
+                            </x-responsive-nav-link>
 
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Log
-                            out</a>
+                            <!-- Authentication -->
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+
+                                <x-responsive-nav-link :href="route('logout')" onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+                                    {{ __('Log Out') }}
+                                </x-responsive-nav-link>
+                            </form>
+                        </a>
                     </div>
                 </div>
             </nav>
@@ -63,7 +70,7 @@
                 class="z-20 flex-col items-center flex-shrink-0 hidden w-16 py-4 bg-white border-r-2 border-indigo-100 shadow-md sm:flex rounded-tr-3xl rounded-br-3xl">
                 <!-- Logo -->
                 <div class="flex-shrink-0 py-4">
-                    <a href="#">
+                    <a href="/">
                         <i class="fas fa-file-alt text-indigo-600 text-2xl"></i>
                     </a>
                 </div>
@@ -75,26 +82,18 @@
                         <span class="sr-only">Toggle sidebar</span>
                         <i class="fa-solid fa-bars"></i>
                     </button>
-                    <!-- Notifications button -->
-                    <button
-                        @click="(isSidebarOpen && currentSidebarTab == 'notificationsTab') ? isSidebarOpen = false : isSidebarOpen = true; currentSidebarTab = 'notificationsTab'"
-                        class="p-2 transition-colors rounded-lg shadow-md hover:bg-indigo-800 hover:text-white focus:outline-none focus:ring focus:ring-indigo-600 focus:ring-offset-white focus:ring-offset-2">
-                        <span class="sr-only">Toggle notifications panel</span>
-                        <i class="fa-solid fa-bell"></i>                    
-                    </button>
                 </div>
 
                 <!-- User avatar -->
                 <div class="relative flex items-center flex-shrink-0 p-2" x-data="{ isOpen: false }">
-                    <button @click="isOpen = !isOpen; $nextTick(() => {isOpen ? $refs.userMenu.focus() : null})"
-                        class="transition-opacity rounded-lg opacity-80 hover:opacity-100 focus:outline-none focus:ring focus:ring-indigo-600 focus:ring-offset-white focus:ring-offset-2">
-                        @if ($post->user)
-    @if ($post->user->profile_picture)
-        <img class="w-12 h-12 rounded-full object-cover mr-4 shadow" src="{{ url('/storage/profile_pictures/' . $post->user->profile_picture) }}">
-    @else
-        <img class="w-12 h-12 rounded-full object-cover mr-4 shadow" src="{{ url('/images/anonymous.png') }}">
-    @endif
-@endif
+                    <button @click="isOpen = !isOpen; $nextTick(() => {isOpen ? $refs.userMenu.focus() : null})" class="transition-opacity rounded-lg opacity-80 hover:opacity-100 focus:outline-none focus:ring focus:ring-indigo-600 focus:ring-offset-white focus:ring-offset-2">
+                        @if (auth()->check())
+                            @if (auth()->user()->profile_picture)
+                                <img class="w-12 h-12 rounded-full object-cover mr-4 shadow" src="{{ url('/storage/profile_pictures/' . auth()->user()->profile_picture) }}">
+                            @else
+                                <img class="w-12 h-12 rounded-full object-cover mr-4 shadow" src="{{ asset('/images/anonymous.png') }}">                            
+                            @endif
+                        @endif
                         <span class="sr-only">User menu</span>
                     </button>
                     <div x-show="isOpen" @click.away="isOpen = false" @keydown.escape="isOpen = false" x-ref="userMenu"
@@ -136,11 +135,11 @@
 
                     <!-- Links -->
                     <div class="flex-1 px-4 space-y-2 overflow-hidden hover:overflow-auto">
-                        <a href="{{ route('posts.index') }}" class="flex items-center space-x-2 text-indigo-600 transition-colors rounded-lg group hover:bg-indigo-600">
+                        <a href="{{route('posts.dashboard')}}" class="flex items-center space-x-2 text-indigo-600 transition-colors rounded-lg group hover:bg-indigo-600">
                             <span aria-hidden="true" class="p-2 transition-colors rounded-lg  group-hover:text-white">
                                 <i class="fas fa-tachometer-alt group-hover:text-white"></i>
                             </span>
-                            <span class="text-black group-hover:text-white">Home</span>
+                            <span class="text-black group-hover:text-white">Dashboard</span>
                         </a>
                         <a href="{{ route('posts.index') }}" class="flex items-center space-x-2 text-indigo-600 transition-colors rounded-lg group hover:bg-indigo-600">
                             <span aria-hidden="true" class="p-2 transition-colors rounded-lg group-hover:text-white">
@@ -156,16 +155,13 @@
                         </a>                    
                         <a href="{{route('liked-posts.index')}}" class="flex items-center space-x-2 text-indigo-600 transition-colors rounded-lg group hover:bg-indigo-600">
                             <span aria-hidden="true" class="p-2 transition-colors rounded-lg group-hover:text-white">
-                                <i class="fa-solid fa-bookmark group-hover:text-white"></i>
+                                <i class="fas fa-heart group-hover:text-white"></i>
                             </span>
                             <span class="text-black group-hover:text-white">Liked Posts</span>
                         </a>                    
                     </div>
                 </nav>
-
-                <section x-show="currentSidebarTab == 'notificationsTab'" class="px-4 py-6">
-                    <h2 class="text-xl">Notifications</h2>
-                </section>
             </div>
         </div>
+
         <div class="flex flex-col w-full mt-[100px]">

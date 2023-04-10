@@ -32,7 +32,7 @@ class ProfileController extends Controller
         $user->fill($request->validated());
     
         // Check if a new profile picture was uploaded
-         if ($request->hasFile('profile_picture')) {
+        if ($request->hasFile('profile_picture')) {
         $profilePicture = $request->file('profile_picture');
         $profilePictureName = time() . '_' . $profilePicture->getClientOriginalName();
         $profilePicturePath = $profilePicture->storeAs('public/profile_pictures', $profilePictureName);

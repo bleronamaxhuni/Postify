@@ -6,9 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{ config('app.name')}}</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css"
-        integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     @vite('resources/css/app.css')
     @vite('resources/js/app.js')
     <script type="module" src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"></script>
@@ -16,21 +14,66 @@
 </head>
 
 <body class="h-screen">
-    <x-navigation :post="$post"></x-navigation>
-    <x-post-modal></x-post-modal>
-    <h2 class="font-bold pl-2 text-2xl">My Posts</h2>
 
+    <x-navigation :post="$post"></x-navigation>
+    <h2 class="font-bold pl-2 text-2xl">Dashboard</h2>
+    <div class="grid grid-cols-3 gap-6 p-5">
+        <div class="grid mt-5">
+            <a class="transform  hover:scale-105 transition duration-300 shadow-lg rounded-lg intro-y bg-white"
+                href="#">
+                <div class="p-5">
+                    <div class="flex justify-between items-center">
+                        <i class="fas fa-pencil-alt text-indigo-600 text-3xl ml-1"></i>
+                        <div class="flex items-center gap-3">
+                            <div class="mt-3 text-3xl font-bold leading-8">{{ $postCount }}</div>
+                            <div class="mt-3 text-base text-gray-600">Posts</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="grid mt-5">
+            <a class="transform  hover:scale-105 transition duration-300 shadow-lg rounded-lg intro-y bg-white"
+                href="#">
+                <div class="p-5">
+                    <div class="flex justify-between items-center">
+                        <i class="fas fa-heart text-indigo-600 text-3xl ml-1"></i>
+                        <div class="flex items-center gap-3">
+                            <div class="mt-3 text-3xl font-bold leading-8">{{ $likeCount }}</div>
+                            <div class="mt-3 text-base text-gray-600">Total Likes</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="grid mt-5">
+            <a class="transform  hover:scale-105 transition duration-300 shadow-lg rounded-lg intro-y bg-white"
+                href="#">
+                <div class="p-5">
+                    <div class="flex justify-between items-center">
+                        <i class="fa-solid fa-bookmark text-indigo-600 text-3xl ml-1"></i>
+                        <div class="flex items-center gap-3">
+                            <div class="mt-3 text-3xl font-bold leading-8">{{ $savedPostCount }}</div>
+                            <div class="mt-3 text-base text-gray-600">Saved Posts</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+
+    <h2 class="font-bold pl-2 text-2xl mt-20">Latest Posts</h2>
     <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-3 xl:gap-0">
-        @foreach($posts as $post)
+        @foreach($latestPosts as $post)
         <div class="flex bg-white shadow-lg rounded-lg mx-2 my-8">
             <div class="flex items-start px-4 py-6 w-full">
-                @if (auth()->check())
-                    @if (auth()->user()->profile_picture)
-                        <img class="w-12 h-12 rounded-full object-cover mr-4 shadow" src="{{ url('/storage/profile_pictures/' . auth()->user()->profile_picture) }}">
+                    @if ($post->user->profile_picture)
+                        <img class="w-12 h-12 rounded-full object-cover mr-4 shadow" src="{{ url('/storage/profile_pictures/' . $post->user->profile_picture) }}">
                     @else
-                        <img class="w-12 h-12 rounded-full object-cover mr-4 shadow" src="{{ asset('/images/anonymous.png') }}">                            
-                    @endif
-                @endif           
+                        <img class="w-12 h-12 rounded-full object-cover mr-4 shadow" src="{{ url('/images/anonymous.png') }}">
+                    @endif                
+
                 <div class="w-full">
                     <div class="flex items-center justify-between w-full">
                         <h2 class="text-lg font-semibold text-gray-900 -mt-1">{{$post->user->name}}</h2>
@@ -157,29 +200,25 @@
         </div>
         @endforeach
 
-    </div>
-    </div>
-    </div>
-    </div>
-
+</div>
+</div>
+</div>
+</div>
+    
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.3/dist/alpine.min.js" defer></script>
     <script>
         const setup = () => {
             return {
-                isSidebarOpen: false,
-                currentSidebarTab: null,
-                isSettingsPanelOpen: false,
-                isSubHeaderOpen: false,
-                watchScreen() {
+                isSidebarOpen: false
+                , currentSidebarTab: null
+                , isSettingsPanelOpen: false
+                , isSubHeaderOpen: false
+                , watchScreen() {
                     if (window.innerWidth <= 1024) {
-                        this.isSidebarOpen = false;
+                        this.isSidebarOpen = false
                     }
                 }
-            }
-        }
-
-        function toggleModal() {
-            document.getElementById('modal').classList.toggle('hidden');
+            , }
         }
     </script>
 </body>
